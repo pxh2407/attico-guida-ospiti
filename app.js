@@ -44,13 +44,6 @@
     $("#codici").textContent = "CIR " + CONTATTI.cir + " · CIN " + CONTATTI.cin;
   }
 
-  // Sito nuovo: italiano in radice, poi /en/ /de/ /fr/ (lo spagnolo usa l'inglese)
-  function aggiornaLinkSito() {
-    const base = "https://www.atticopanoramico.it/" + ({ en: "en/", de: "de/", fr: "fr/", es: "en/" }[L] || "");
-    $("#linkSito").href = base;
-    $("#linkDisp").href = base + "#disponibilita";
-  }
-
   /* ---------- Oggi: rifiuti e silenzio ---------- */
   function fmtOra(h) {
     const d = new Date(2000, 0, 1, h, 0);
@@ -304,7 +297,7 @@
   }
 
   function disegnaTutto() {
-    applicaUI(); aggiornaLinkSito(); aggiornaOggi(); guida(); dintorni(); numeri(); mostraMeteo();
+    applicaUI(); aggiornaOggi(); guida(); dintorni(); numeri(); mostraMeteo();
   }
 
   /* ---------- Eventi ---------- */

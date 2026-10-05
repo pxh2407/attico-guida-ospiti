@@ -110,7 +110,6 @@ strong, b { font-weight: 600; }
 .btn span { font-size: 18px; }
 .btn b { white-space: nowrap; }
 
-.torna p { margin: 6px 0 14px; }
 .piede { text-align: center; color: var(--tenue); font-size: 14px; padding: 18px 0 8px; }
 .piede p { margin: 2px 0; }
 .piede__nome { font: 600 20px var(--serif); color: var(--blu); }
@@ -218,7 +217,7 @@ strong, b { font-weight: 600; }
 .campo button { flex: none; padding: 8px 12px; border-radius: 10px; background: var(--blu); color: #fff; font-weight: 600; font-size: 14px; }
 .chiave { display: flex; align-items: center; gap: 14px; padding: 11px 0; border-top: 1px solid var(--linea); }
 .chiave:first-of-type { border-top: 0; }
-.chiave em { width: 26px; flex: none; font: 700 17px var(--serif); font-style: normal; color: var(--blu); text-align: center; }
+.chiave em { width: 38px; height: 38px; flex: none; border-radius: 50%; background: var(--blu); color: #fff; display: grid; place-items: center; font: 700 21px var(--sans); font-style: normal; }
 .chiave i { width: 26px; height: 26px; flex: none; border-radius: 50%; box-shadow: inset 0 0 0 2px rgba(0,0,0,.12); }
 .chiave i.tele { border-radius: 8px; background: var(--crema); display: grid; place-items: center; font-style: normal; font-size: 16px; box-shadow: none; }
 .settimana { display: grid; gap: 6px; margin: 0 0 16px; }
