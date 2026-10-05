@@ -124,14 +124,22 @@
   }
 
   /* ---------- Dintorni ---------- */
-  function dintorni() {
-    $("#dintorni").innerHTML = DINTORNI.map(c =>
-      '<section class="categoria"><h2><span>' + c.icona + "</span>" + esc(tr(c.cat)) + '</h2><div class="luoghi">' +
+  function schedeLuoghi(c) {
+    return '<div class="luoghi">' +
       c.luoghi.map(l => '<button class="luogo" data-luogo="' + esc(l._id) + '"><span class="luogo__foto"' +
         (l.foto ? ' style="background-image:url(\'images/' + encodeURI(l.foto) + '\')"' : "") + ">" + (l.foto ? "" : (l.icona || c.icona)) +
         '</span><span class="luogo__info"><span class="luogo__nome">' + esc(tr(l.nome)) + '</span><span class="luogo__desc">' + esc(tr(l.desc)) +
         '</span><span class="luogo__azione">🧭 ' + esc(u("indicazioni")) + " · " + esc(l.auto ? u("in_auto") : u("a_piedi")) + "</span></span></button>").join("") +
-      "</div></section>").join("");
+      "</div>";
+  }
+  // Pulsante "Mangiare": solo la prima categoria (ristoranti e bar)
+  function apriMangiare() {
+    const c = DINTORNI[0];
+    apriScheda(c.icona, tr(c.cat), schedeLuoghi(c));
+  }
+  function dintorni() {
+    $("#dintorni").innerHTML = DINTORNI.map(c =>
+      '<section class="categoria"><h2><span>' + c.icona + "</span>" + esc(tr(c.cat)) + "</h2>" + schedeLuoghi(c) + "</section>").join("");
     $("#esperienze").innerHTML = ESPERIENZE.map(e => '<a class="esperienza" href="' + e.url + '" target="_blank" rel="noopener"><span>' + e.icona + "</span>" + esc(tr(e)) + "</a>").join("");
   }
 
@@ -315,6 +323,7 @@
     }
   });
   $("#langBtn").addEventListener("click", apriLingue);
+  $("#btnMangiare").addEventListener("click", apriMangiare);
   $("#schedaChiudi").addEventListener("click", () => chiudiScheda());
   $("#schedaAscolta").addEventListener("click", leggi);
   velo.addEventListener("click", () => chiudiScheda());

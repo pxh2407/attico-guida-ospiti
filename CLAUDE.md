@@ -15,6 +15,7 @@ Rifacimento professionale dell'app `CLAUDE\ATTICO PER INTERNO` (che resta intatt
 - Calendario rifiuti: `RIFIUTI_CALENDARIO` in testi.js (indice 0 = domenica). Se cambia, aggiornare anche la vecchia app e le locandine.
 
 ## Note
+- Pulsante rapido "Mangiare" (`#btnMangiare`): apre una scheda con SOLO la prima categoria di DINTORNI (ristoranti e bar), non la pagina Dintorni intera.
 - Recensioni tolte su richiesta (2026-10-05): gli ospiti le hanno già viste prima di prenotare.
 - Lettera di benvenuto tolta su richiesta (2026-10-05). Il testo originale resta nella vecchia app.
 - Sezione "Tornate a trovarci / Disponibilità" tolta su richiesta (2026-10-05): agli ospiti già in casa non interessa.
