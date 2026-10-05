@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Attico Panoramico · Guida ospiti</title>
+  <meta name="description" content="Guida per gli ospiti dell'Attico Panoramico di Milazzo: casa, regole, dintorni e numeri utili.">
+  <meta name="theme-color" content="#14233c">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Attico">
+  <meta property="og:title" content="Attico Panoramico · Guida ospiti">
+  <meta property="og:description" content="Tutto quello che serve per il vostro soggiorno a Milazzo.">
+  <link rel="icon" href="images/icon-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=4">
+</head>
+<body>
+
+<!-- Barra superiore -->
+<header class="topbar" id="topbar">
+  <a class="brand" href="#home" data-vai="home">
+    <img src="images/Attico.jpg" alt="" width="36" height="36">
+    <span>Attico Panoramico</span>
+  </a>
+  <button class="lang-btn" id="langBtn" aria-label="Lingua">
+    <span id="langFlag">🇮🇹</span><span id="langCode">IT</span>
+  </button>
+</header>
+
+<main id="main">
+
+  <!-- ================= HOME ================= -->
+  <section class="vista" id="v-home" data-vista="home">
+    <div class="hero">
+      <div class="hero__img" role="img" aria-label="Castello di Milazzo"></div>
+      <div class="hero__txt">
+        <p class="hero__kicker">Milazzo · Sicilia</p>
+        <h1 class="hero__title" data-t="benvenuti">Benvenuti</h1>
+        <p class="hero__sub" data-t="sottotitolo">La tua oasi a Milazzo</p>
+        <p class="meteo" id="meteo" hidden></p>
+      </div>
+    </div>
+
+    <div class="contenuto">
+      <!-- Oggi -->
+      <article class="card oggi">
+        <p class="oggi__data" id="oggiData"></p>
+        <button class="oggi__riga" data-apri="rifiuti">
+          <span class="oggi__icona" id="rifIcona">♻️</span>
+          <span class="oggi__testo"><small data-t="rifiuti_stasera" id="rifEtichetta"></small><strong id="rifTipo"></strong></span>
+          <span class="freccia" aria-hidden="true">›</span>
+        </button>
+        <button class="oggi__riga" data-apri="silenzio">
+          <span class="oggi__icona">🌙</span>
+          <span class="oggi__testo"><small id="silEtichetta"></small><strong id="silOra"></strong></span>
+          <span class="freccia" aria-hidden="true">›</span>
+        </button>
+      </article>
+
+      <!-- Rapidi -->
+      <h2 class="titolo-sez" data-t="rapidi">A portata di mano</h2>
+      <div class="rapidi">
+        <button class="rapido" data-apri="wifi"><span>📶</span><b data-t="q_wifi">WiFi</b></button>
+        <button class="rapido" data-apri="chiavi"><span>🔑</span><b data-t="q_chiavi">Chiavi</b></button>
+        <button class="rapido" data-apri="rifiuti"><span>♻️</span><b data-t="q_rifiuti">Rifiuti</b></button>
+        <button class="rapido" data-apri="clima"><span>❄️</span><b data-t="q_clima">Clima</b></button>
+        <button class="rapido" data-vai="dintorni"><span>🍝</span><b data-t="q_mangiare">Mangiare</b></button>
+        <button class="rapido rapido--sos" data-vai="aiuto"><span>🆘</span><b data-t="q_sos">Emergenze</b></button>
+      </div>
+
+      <!-- Regole -->
+      <article class="card regole">
+        <h2 class="titolo-card" data-t="regole_titolo">Regole della casa</h2>
+        <p class="sotto" data-t="regole_sotto"></p>
+        <button class="regola" data-apri="silenzio"><span>🌙</span><p data-t="r_silenzio"></p></button>
+        <button class="regola" data-apri="rifiuti"><span>♻️</span><p data-t="r_rifiuti"></p></button>
+        <button class="regola" data-apri="pioggia"><span>🌧️</span><p data-t="r_pioggia"></p></button>
+        <button class="regola" data-apri="clima"><span>❄️</span><p data-t="r_clima"></p></button>
+      </article>
+
+      <!-- Lettera -->
+      <article class="card lettera">
+        <h2 class="titolo-card" data-t="lettera_titolo">Una lettera per voi</h2>
+        <div class="lettera__testo" id="lettera"></div>
+        <button class="link-btn" id="letteraBtn" data-t="lettera_apri"></button>
+      </article>
+
+      <!-- Host -->
+      <article class="card host">
+        <div class="host__testa">
+          <img src="images/Attico.jpg" alt="" width="56" height="56">
+          <div>
+            <h2 class="titolo-card" data-t="host_titolo">Siamo qui per voi</h2>
+            <p class="sotto">Grazia &amp; Filippo</p>
+          </div>
+        </div>
+        <p data-t="host_testo"></p>
+        <div class="bottoni">
+          <a class="btn btn--wa" id="hostWa" target="_blank" rel="noopener"><span>💬</span><b data-t="whatsapp">WhatsApp</b></a>
+          <a class="btn btn--chiaro" id="hostTel"><span>📞</span><b data-t="chiama">Chiama</b></a>
+        </div>
+      </article>
+
+      <!-- Tornate -->
+      <article class="card torna">
+        <h2 class="titolo-card" data-t="torna_titolo">Tornate a trovarci</h2>
+        <p data-t="torna_testo"></p>
+        <div class="bottoni">
+          <a class="btn btn--oro" id="linkDisp" href="https://www.atticopanoramico.it/#disponibilita" target="_blank" rel="noopener"><span>📅</span><b data-t="disponibilita">Disponibilità</b></a>
+          <a class="btn btn--chiaro" id="linkSito" href="https://www.atticopanoramico.it/" target="_blank" rel="noopener"><span>🌐</span><b data-t="sito">Il nostro sito</b></a>
+        </div>
+      </article>
+
+      <footer class="piede">
+        <p class="piede__nome">Attico Panoramico</p>
+        <p>Via Cristoforo Colombo 7 · 98057 Milazzo (ME)</p>
+        <p class="piede__codici" id="codici"></p>
+      </footer>
+    </div>
+  </section>
+
+  <!-- ================= LA CASA ================= -->
+  <section class="vista" id="v-guida" data-vista="guida" hidden>
+    <div class="contenuto contenuto--pagina">
+      <h1 class="titolo-pag" data-t="guida_titolo">La casa</h1>
+      <p class="sotto-pag" data-t="guida_sotto"></p>
+      <label class="cerca">
+        <span aria-hidden="true">🔍</span>
+        <input type="search" id="cerca" autocomplete="off">
+      </label>
+      <nav class="chips" id="chips"></nav>
+      <div id="guida"></div>
+      <p class="vuoto" id="vuoto" hidden data-t="nessun_risultato"></p>
+    </div>
+  </section>
+
+  <!-- ================= DINTORNI ================= -->
+  <section class="vista" id="v-dintorni" data-vista="dintorni" hidden>
+    <div class="contenuto contenuto--pagina">
+      <h1 class="titolo-pag" data-t="dintorni_titolo">Dintorni</h1>
+      <p class="sotto-pag" data-t="dintorni_sotto"></p>
+      <div id="dintorni"></div>
+      <h2 class="titolo-sez" data-t="cose_da_fare">Cose da fare</h2>
+      <div class="esperienze" id="esperienze"></div>
+    </div>
+  </section>
+
+  <!-- ================= AIUTO ================= -->
+  <section class="vista" id="v-aiuto" data-vista="aiuto" hidden>
+    <div class="contenuto contenuto--pagina">
+      <h1 class="titolo-pag" data-t="aiuto_titolo">Aiuto</h1>
+      <p class="sotto-pag" data-t="aiuto_sotto"></p>
+      <a class="sos" href="tel:112">
+        <span class="sos__num">112</span>
+        <span><b data-t="emergenza">Emergenza</b><small data-t="emergenza_testo"></small></span>
+      </a>
+      <article class="card host host--piccolo">
+        <div class="host__testa">
+          <img src="images/Attico.jpg" alt="" width="48" height="48">
+          <div><h2 class="titolo-card" data-t="host_breve">I vostri host</h2><p class="sotto" id="hostNumero"></p></div>
+        </div>
+        <div class="bottoni">
+          <a class="btn btn--wa" id="hostWa2" target="_blank" rel="noopener"><span>💬</span><b data-t="whatsapp">WhatsApp</b></a>
+          <a class="btn btn--chiaro" id="hostTel2"><span>📞</span><b data-t="chiama">Chiama</b></a>
+        </div>
+      </article>
+      <div id="numeri"></div>
+    </div>
+  </section>
+</main>
+
+<!-- Barra di navigazione in basso -->
+<nav class="tabbar" aria-label="Navigazione">
+  <button data-vai="home" class="attiva"><span>🏠</span><b data-t="tab_home">Home</b></button>
+  <button data-vai="guida"><span>🛋️</span><b data-t="tab_guida">La casa</b></button>
+  <button data-vai="dintorni"><span>🧭</span><b data-t="tab_dintorni">Dintorni</b></button>
+  <button data-vai="aiuto"><span>🆘</span><b data-t="tab_aiuto">Aiuto</b></button>
+</nav>
+
+<!-- Scheda di dettaglio (si apre dal basso) -->
+<div class="velo" id="velo" hidden></div>
+<section class="scheda" id="scheda" role="dialog" aria-modal="true" aria-labelledby="schedaTitolo" hidden>
+  <div class="scheda__maniglia" aria-hidden="true"></div>
+  <header class="scheda__testa">
+    <span class="scheda__icona" id="schedaIcona"></span>
+    <h2 id="schedaTitolo"></h2>
+    <button class="tondo" id="schedaAscolta" aria-label="Ascolta">🔊</button>
+    <button class="tondo" id="schedaChiudi" aria-label="Chiudi">✕</button>
+  </header>
+  <div class="scheda__corpo" id="schedaCorpo"></div>
+</section>
+
+<div class="avviso-copia" id="toast" hidden></div>
+
+<script src="testi.js?v=4"></script>
+<script src="app.js?v=4"></script>
+</body>
+</html>

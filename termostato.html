@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Guida Termostato – Fantini Cosmi</title>
+ <style>
+ *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+ :root {
+ --bg: #131008;
+ --surface: #1e1a0c;
+ --surface2: #2a2414;
+ --accent: #c09030;
+ --green: #3a8e68;
+ --red: #b04040;
+ --blue: #4878b8;
+ --text: #ece6d8;
+ --muted: #a09060;
+ --border: rgba(192,144,48,0.20);
+ --card: rgba(192,144,48,0.07);
+ --radius: 10px;
+ }
+
+ body {
+ font-family: 'Segoe UI', Arial, sans-serif;
+ background: var(--bg);
+ color: var(--text);
+ min-height: 100vh;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ padding: 28px 16px 50px;
+ font-size: 15px;
+ }
+
+ /* ── HEADER ───────────────────────────── */
+ .page-title {
+ font-size: 1.5rem;
+ font-weight: 800;
+ text-align: center;
+ margin-bottom: 4px;
+ color: var(--accent);
+ }
+ .page-sub {
+ font-size: 0.82rem;
+ color: var(--muted);
+ text-align: center;
+ margin-bottom: 28px;
+ line-height: 1.5;
+ }
+
+ /* ── THERMOSTAT SHELL ─────────────────── */
+ .thermostat {
+ width: 300px;
+ background: linear-gradient(160deg, #f6f6f6 0%, #dfdfdf 100%);
+ border-radius: 22px;
+ padding: 18px 20px 14px;
+ box-shadow:
+ 0 20px 55px rgba(0,0,0,0.5),
+ 0 5px 18px rgba(0,0,0,0.3),
+ inset 0 1px 0 rgba(255,255,255,0.85),
+ inset 0 -1px 0 rgba(0,0,0,0.07);
+ border: 1px solid #c5c5c5;
+ }
+
+ .brand {
+ text-align: center;
+ font-size: 0.6rem;
+ letter-spacing: 3.5px;
+ color: #999;
+ text-transform: uppercase;
+ font-weight: 700;
+ margin-bottom: 14px;
+ }
+
+ /* ── GRID ─────────────────────────────── */
+ .t-grid {
+ display: grid;
+ grid-template-columns: 50px 1fr 50px;
+ grid-template-rows: 50px 50px;
+ gap: 8px;
+ }
+
+ /* ── LCD ──────────────────────────────── */
+ .lcd {
+ grid-column: 2;
+ grid-row: 1 / 3;
+ background: #9fb490;
+ border-radius: 8px;
+ padding: 10px 10px 8px;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ justify-content: center;
+ box-shadow: inset 0 3px 9px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(0,0,0,0.12);
+ position: relative;
+ min-height: 108px;
+ transition: background 0.35s;
+ }
+ .lcd.off { background: #8a8a8a; }
+
+ .lcd-heat {
+ position: absolute;
+ top: 5px;
+ right: 7px;
+ font-size: 0.52rem;
+ font-weight: 700;
+ color: #c0392b;
+ letter-spacing: 0.5px;
+ opacity: 0;
+ transition: opacity 0.4s;
+ }
+ .lcd-heat.on { opacity: 1; }
+
+ .lcd-temp {
+ font-size: 2.55rem;
+ font-weight: 700;
+ font-family: 'Courier New', monospace;
+ color: #111;
+ line-height: 1;
+ letter-spacing: -1px;
+ }
+ .lcd-unit { font-size: 0.85rem; vertical-align: super; font-weight: 400; }
+
+ .lcd-set {
+ font-size: 0.68rem;
+ color: #222;
+ margin-top: 3px;
+ font-family: 'Courier New', monospace;
+ }
+
+ .lcd-icons {
+ display: flex;
+ gap: 14px;
+ margin-top: 7px;
+ }
+ .lcd-icon {
+ font-size: 1.05rem;
+ opacity: 0.22;
+ transition: opacity 0.3s, transform 0.2s;
+ }
+ .lcd-icon.on { opacity: 1; transform: scale(1.18); }
+
+ /* ── BUTTONS ──────────────────────────── */
+ .btn {
+ width: 50px;
+ height: 50px;
+ background: linear-gradient(155deg, #f0f0f0, #d2d2d2);
+ border: 1px solid #b4b4b4;
+ border-radius: 9px;
+ cursor: pointer;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ justify-content: center;
+ font-size: 1.25rem;
+ color: #444;
+ box-shadow: 0 4px 8px rgba(0,0,0,0.14), inset 0 1px 0 rgba(255,255,255,0.8);
+ transition: all 0.08s;
+ user-select: none;
+ -webkit-tap-highlight-color: transparent;
+ line-height: 1;
+ }
+ .btn:hover { background: linear-gradient(155deg, #e6e6e6, #c8c8c8); }
+ .btn:active {
+ transform: scale(0.92) translateY(1px);
+ box-shadow: 0 1px 4px rgba(0,0,0,0.13);
+ background: linear-gradient(155deg, #d6d6d6, #bebebe);
+ }
+ .btn-lbl { font-size: 0.48rem; letter-spacing: 0.5px; color: #777; margin-top: 2px; }
+
+ .btn-up { grid-column:1; grid-row:1; font-size:1.1rem; }
+ .btn-down { grid-column:1; grid-row:2; font-size:1.1rem; }
+ .btn-mode { grid-column:3; grid-row:1; font-size:0.95rem; }
+ .btn-power { grid-column:3; grid-row:2; font-size:1rem; }
+
+ /* ── COMBO BUTTON ────────────────────── */
+ .combo-row {
+ display: flex;
+ gap: 8px;
+ margin-top: 10px;
+ }
+ .btn-combo {
+ flex: 1;
+ height: 36px;
+ font-size: 0.7rem;
+ font-weight: 600;
+ color: #555;
+ border-radius: 9px;
+ letter-spacing: 0;
+ }
+
+ /* ── LEGEND ───────────────────────────── */
+ .legend {
+ display: flex;
+ justify-content: center;
+ margin-top: 12px;
+ padding-top: 10px;
+ border-top: 1px solid #d0d0d0;
+ gap: 20px;
+ }
+ .legend-item {
+ text-align: center;
+ font-size: 0.62rem;
+ color: #888;
+ line-height: 1.4;
+ }
+ .legend-item .li-icon {
+ font-size: 1rem;
+ display: block;
+ margin-bottom: 3px;
+ opacity: 0.55;
+ }
+
+ /* ── INFO PANEL ───────────────────────── */
+ .info-panel {
+ width: 300px;
+ background: var(--surface);
+ border-radius: var(--radius);
+ padding: 15px 16px;
+ box-shadow: 0 4px 18px rgba(0,0,0,0.3);
+ margin-top: 20px;
+ min-height: 90px;
+ border: 1px solid var(--border);
+ border-left: 5px solid var(--accent);
+ transition: border-color 0.3s, transform 0.12s;
+ }
+ .info-panel.c-comfort { border-left-color: #e67e22; }
+ .info-panel.c-economy { border-left-color: #8e44ad; }
+ .info-panel.c-off { border-left-color: #666; }
+ .info-panel.c-up { border-left-color: var(--red); }
+ .info-panel.c-down { border-left-color: var(--blue); }
+ .info-panel.c-combo { border-left-color: var(--green); }
+ .info-panel.c-config { border-left-color: var(--accent); }
+
+ .info-title {
+ font-weight: 700;
+ font-size: 0.93rem;
+ margin-bottom: 6px;
+ color: var(--accent);
+ }
+ .info-text {
+ font-size: 0.82rem;
+ color: var(--muted);
+ line-height: 1.55;
+ }
+ .info-text strong { color: var(--text); }
+ .info-text em { color: var(--muted); }
+
+ /* ── ADVANCED BAR (hidden access) ────── */
+ .adv-bar {
+ width: 300px;
+ margin-top: 16px;
+ padding: 10px;
+ background: var(--surface);
+ border: 1px solid var(--border);
+ border-radius: var(--radius);
+ cursor: default;
+ user-select: none;
+ -webkit-tap-highlight-color: transparent;
+ }
+
+ /* ── ADVANCED PANEL ───────────────────── */
+ .adv-panel {
+ width: 300px;
+ background: var(--surface);
+ border-radius: var(--radius);
+ padding: 18px;
+ box-shadow: 0 4px 18px rgba(0,0,0,0.3);
+ border: 1px solid var(--border);
+ margin-top: 14px;
+ display: none;
+ }
+ .adv-panel.show { display: block; }
+
+ .adv-panel h3 { font-size: 1rem; margin-bottom: 4px; color: var(--accent); }
+ .adv-desc { font-size: 0.76rem; color: var(--muted); margin-bottom: 16px; line-height: 1.45; }
+ .adv-desc strong { color: var(--text); }
+
+ /* config table */
+ .cfg-table { width: 100%; border-collapse: collapse; margin-bottom: 14px; }
+ .cfg-table th {
+ font-size: 0.68rem;
+ color: var(--accent);
+ font-weight: 700;
+ padding: 6px 6px;
+ text-align: left;
+ border-bottom: 1px solid var(--border);
+ }
+ .cfg-table td {
+ padding: 7px 6px;
+ font-size: 0.76rem;
+ color: var(--text);
+ border-bottom: 1px solid rgba(192,144,48,0.08);
+ vertical-align: top;
+ }
+ .cfg-table td:first-child {
+ font-weight: 700;
+ color: var(--accent);
+ white-space: nowrap;
+ width: 42px;
+ }
+ .cfg-table td:last-child {
+ font-size: 0.7rem;
+ color: var(--muted);
+ }
+
+ .tip-box {
+ background: rgba(192,144,48,0.10);
+ border-left: 4px solid var(--accent);
+ border-radius: 8px;
+ padding: 10px 12px;
+ margin-top: 14px;
+ font-size: 0.77rem;
+ color: var(--muted);
+ line-height: 1.5;
+ }
+ .tip-box strong { color: var(--text); }
+
+ /* ── RESPONSIVE ───────────────────────── */
+ @media(max-width:340px) {
+ .thermostat, .info-panel, .adv-bar, .adv-panel { width: 100%; }
+ }
+ </style>
+</head>
+<body>
+
+<div class="page-title" data-i18n="title"> Guida al Termostato</div>
+<p class="page-sub" data-i18n="subtitle">Fantini Cosmi &mdash; Casa Vacanze<br>Tocca i pulsanti per scoprire come funzionano</p>
+
+<!-- ═══ THERMOSTAT ════════════════════════ -->
+<div class="thermostat">
+ <div class="brand">Fantini &nbsp;&nbsp; Cosmi</div>
+
+ <div class="t-grid">
+ <!-- UP -->
+ <button class="btn btn-up"
+ onmousedown="btnPress('up')" onmouseup="btnRelease('up')"
+ ontouchstart="btnPress('up')" ontouchend="btnRelease('up')">▲</button>
+
+ <!-- LCD -->
+ <div class="lcd" id="lcd">
+ <div class="lcd-heat" id="lcdHeat">● RIS.</div>
+ <div class="lcd-temp" id="lcdTemp">20.0<span class="lcd-unit">°C</span></div>
+ <div class="lcd-set" id="lcdSet"></div>
+ <div class="lcd-icons">
+ <span class="lcd-icon on" id="ico-comfort" title="Comfort (Giorno)"></span>
+ <span class="lcd-icon" id="ico-economy" title="Economy (Notte)"></span>
+ </div>
+ </div>
+
+ <!-- MODE: Day/Night -->
+ <button class="btn btn-mode" onclick="go('mode')">
+ /<span class="btn-lbl" data-i18n="btn_mode">MODO</span>
+ </button>
+
+ <!-- DOWN -->
+ <button class="btn btn-down"
+ onmousedown="btnPress('down')" onmouseup="btnRelease('down')"
+ ontouchstart="btnPress('down')" ontouchend="btnRelease('down')">▽</button>
+
+ <!-- POWER -->
+ <button class="btn btn-power" onclick="go('power')">
+ <span class="btn-lbl">OFF</span>
+ </button>
+ </div>
+
+ <!-- COMBO BUTTON (only °C / °F) -->
+ <div class="combo-row">
+ <button class="btn btn-combo" onclick="go('combo_cf')" data-i18n="btn_combo">▲+▽ insieme = cambio °C / °F</button>
+ </div>
+
+ <!-- LEGEND -->
+ <div class="legend">
+ <div class="legend-item">
+ <span class="li-icon"></span>Comfort<br><em data-i18n="leg_day">giorno</em>
+ </div>
+ <div class="legend-item">
+ <span class="li-icon"></span>Economy<br><em data-i18n="leg_night">notte</em>
+ </div>
+ </div>
+</div>
+
+<!-- ═══ INFO PANEL ════════════════════════ -->
+<div class="info-panel c-comfort" id="infoPanel">
+ <div class="info-title" id="infoTitle"> Come usare questo simulatore</div>
+ <div class="info-text" id="infoText">
+ Tocca i pulsanti del termostato virtuale per scoprire cosa fanno.<br>
+ Ora è <strong>acceso</strong> in modalità <strong>Comfort </strong> (giorno).
+ </div>
+</div>
+
+<!-- ═══ ADVANCED BAR (tap 5x to open) ═════ -->
+<div class="adv-bar" id="advBar"></div>
+
+<!-- ═══ ADVANCED PANEL ════════════════════ -->
+<div class="adv-panel" id="advPanel">
+ <h3 data-i18n="adv_title"> Menu Configurazione (P01–P07)</h3>
+ <p class="adv-desc" data-i18n="adv_desc">
+ Per accedere: inserire una punta nel foro <strong>RESET</strong> (laterale destro) tenendo premuto <strong>▲</strong> finché appare <strong>P01</strong>.<br>
+ Usare <strong>▲/▽</strong> per navigare tra i parametri. Premere <strong>▽</strong> per modificare un valore. Attendere 1 minuto per uscire automaticamente.
+ </p>
+
+ <table class="cfg-table">
+ <thead>
+ <tr>
+ <th data-i18n="th_param">Param</th>
+ <th data-i18n="th_function">Funzione</th>
+ <th>Default</th>
+ </tr>
+ </thead>
+ <tbody>
+ <tr>
+ <td>P01</td>
+ <td data-i18n="p01">Display: mostra temperatura <strong>ambiente</strong> o <strong>impostata</strong></td>
+ <td data-i18n="p01d">Ambiente</td>
+ </tr>
+ <tr>
+ <td>P02</td>
+ <td data-i18n="p02"><strong>Calibrazione</strong> — corregge la temperatura se non corrisponde a un termometro esterno</td>
+ <td>0.0°C (da -4.0 a +4.0)</td>
+ </tr>
+ <tr>
+ <td>P03</td>
+ <td data-i18n="p03">Limite <strong>minimo</strong> temperatura</td>
+ <td>2.0°C</td>
+ </tr>
+ <tr>
+ <td>P04</td>
+ <td data-i18n="p04">Limite <strong>massimo</strong> temperatura</td>
+ <td>40.0°C</td>
+ </tr>
+ <tr>
+ <td>P07</td>
+ <td data-i18n="p07"><strong>Isteresi</strong> — quanto la temperatura può variare prima che il sistema si attivi/disattivi</td>
+ <td>0.3°C (da 0.3 a 2.0)</td>
+ </tr>
+ </tbody>
+ </table>
+
+ <div class="tip-box" data-i18n="adv_tip">
+ <strong>Consiglio:</strong> Normalmente non serve modificare questi parametri. L'unico utile è <strong>P02</strong> (calibrazione): se la temperatura mostrata non corrisponde a un termometro reale, potete correggerla.
+ </div>
+</div>
+
+<script>
+// ─── COMBO PRESS (▲ + ▽ simultanei) ────────────────────
+var pressed = { up: false, down: false };
+var comboFired = false;
+var comboTimer = null;
+
+function btnPress(btn) {
+ pressed[btn] = true;
+ clearTimeout(comboTimer);
+ comboTimer = setTimeout(function() {
+ if (pressed['up'] && pressed['down']) {
+ comboFired = true;
+ go('combo_cf');
+ } else {
+ go(btn);
+ }
+ comboTimer = null;
+ }, 120);
+}
+
+function btnRelease(btn) {
+ pressed[btn] = false;
+ comboFired = false;
+}
+
+// ─── STATE ──────────────────────────────────────────────
+var S = {
+ power: true,
+ mode: 'comfort',
+ unit: 'C',
+ comfortTemp: 20.0,
+ economyTemp: 20.0,
+ curTemp: 20.0
+};
+
+// ─── LANGUAGE SYSTEM ────────────────────────────────────
+var currentLang = 'it';
+var italianTexts = {};
+
+var translations = {
+ en: {
+ title: ' Thermostat Guide',
+ subtitle: 'Fantini Cosmi &mdash; Holiday Home<br>Tap the buttons to learn how they work',
+ btn_mode: 'MODE',
+ btn_combo: '▲+▽ together = switch °C / °F',
+ leg_day: 'daytime',
+ leg_night: 'nighttime',
+ adv_title: ' Configuration Menu (P01–P07)',
+ adv_desc: 'To access: insert a pin into the <strong>RESET</strong> hole (right side) while holding <strong>▲</strong> until <strong>P01</strong> appears.<br>Use <strong>▲/▽</strong> to navigate parameters. Press <strong>▽</strong> to edit a value. Wait 1 minute to exit automatically.',
+ th_param: 'Param',
+ th_function: 'Function',
+ p01: 'Display: shows <strong>room</strong> or <strong>set</strong> temperature',
+ p01d: 'Room',
+ p02: '<strong>Calibration</strong> — corrects the temperature if it doesn\'t match an external thermometer',
+ p03: 'Temperature <strong>minimum</strong> limit',
+ p04: 'Temperature <strong>maximum</strong> limit',
+ p07: '<strong>Hysteresis</strong> — how much the temperature can vary before the system turns on/off',
+ adv_tip: ' <strong>Tip:</strong> Normally you don\'t need to change these parameters. The only useful one is <strong>P02</strong> (calibration): if the displayed temperature doesn\'t match a real thermometer, you can correct it.'
+ }
+};
+
+// ─── INFO MESSAGES ──────────────────────────────────────
+var MSG_IT = {
+ up: {
+ cls: 'c-up',
+ title: '▲ Aumenta la temperatura',
+ textFn: function() {
+ var modeLabel = S.mode === 'comfort' ? 'Comfort (giorno)' : 'Economy (notte)';
+ return 'Ogni pressione aumenta di <strong>0.1°C</strong> la temperatura della modalità <strong>' + modeLabel + '</strong>.<br>Intervallo: da 2.0°C a 40.0°C.';
+ }
+ },
+ down: {
+ cls: 'c-down',
+ title: '▽ Diminuisci la temperatura',
+ textFn: function() {
+ var modeLabel = S.mode === 'comfort' ? 'Comfort (giorno)' : 'Economy (notte)';
+ return 'Ogni pressione riduce di <strong>0.1°C</strong> la temperatura della modalità <strong>' + modeLabel + '</strong>.<br>Intervallo: da 2.0°C a 40.0°C.';
+ }
+ },
+ comfort: {
+ cls: 'c-comfort',
+ title: ' Modalità Comfort (Giorno)',
+ textFn: function() {
+ return 'Il display mostra l\'icona <strong></strong> (sole).<br>È la temperatura <strong>diurna</strong>: la casa viene mantenuta alla temperatura impostata per il comfort.<br><br> Premi <strong>/</strong> per passare alla modalità Notte (Economy).';
+ }
+ },
+ economy: {
+ cls: 'c-economy',
+ title: ' Modalità Economy (Notte)',
+ textFn: function() {
+ return 'Il display mostra l\'icona <strong></strong> (luna).<br>È la temperatura <strong>notturna/risparmio</strong>: qualche grado in meno per consumare meno energia.<br><br> Premi <strong>/</strong> per tornare alla modalità Giorno (Comfort).';
+ }
+ },
+ poweron: {
+ cls: 'c-comfort',
+ title: ' Termostato acceso',
+ text: 'Il termostato è <strong>riacceso</strong> e attivo.<br>Puoi riaccenderlo anche premendo il tasto <strong>/</strong>.'
+ },
+ poweroff: {
+ cls: 'c-off',
+ title: ' Termostato spento (OFF)',
+ text: 'Il termostato è <strong>spento</strong>. Il display mostra "OFF".<br>Il riscaldamento è disattivato.<br><br>Per riaccenderlo: premi <strong></strong> oppure <strong>/</strong>.'
+ },
+ blocked: {
+ cls: 'c-off',
+ title: ' Termostato spento',
+ text: 'Il termostato è spento. Premi <strong></strong> o <strong>/</strong> per riaccenderlo.'
+ },
+ combo_cf: {
+ cls: 'c-combo',
+ title: '▲+▽ Cambio unità di misura',
+ textFn: function() { return 'Unità cambiata in <strong>°' + S.unit + '</strong>.<br><br>Se vedi una temperatura strana sul display (es. 68.4) probabilmente hai premuto ▲ e ▽ insieme per sbaglio, passando ai gradi Fahrenheit. Ripremili insieme per tornare ai °C.'; }
+ },
+ welcome: {
+ cls: 'c-comfort',
+ title: ' Come usare questo simulatore',
+ text: 'Tocca i pulsanti del termostato virtuale per scoprire cosa fanno.<br>Ora è <strong>acceso</strong> in modalità <strong>Comfort </strong> (giorno).'
+ }
+};
+
+var MSG_EN = {
+ up: {
+ cls: 'c-up',
+ title: '▲ Increase temperature',
+ textFn: function() {
+ var modeLabel = S.mode === 'comfort' ? 'Comfort (daytime)' : 'Economy (nighttime)';
+ return 'Each press increases by <strong>0.1°C</strong> the temperature for <strong>' + modeLabel + '</strong> mode.<br>Range: 2.0°C to 40.0°C.';
+ }
+ },
+ down: {
+ cls: 'c-down',
+ title: '▽ Decrease temperature',
+ textFn: function() {
+ var modeLabel = S.mode === 'comfort' ? 'Comfort (daytime)' : 'Economy (nighttime)';
+ return 'Each press decreases by <strong>0.1°C</strong> the temperature for <strong>' + modeLabel + '</strong> mode.<br>Range: 2.0°C to 40.0°C.';
+ }
+ },
+ comfort: {
+ cls: 'c-comfort',
+ title: ' Comfort Mode (Daytime)',
+ textFn: function() {
+ return 'The display shows the <strong></strong> (sun) icon.<br>This is the <strong>daytime</strong> temperature: the house is kept at a comfortable temperature.<br><br> Press <strong>/</strong> to switch to Night mode (Economy).';
+ }
+ },
+ economy: {
+ cls: 'c-economy',
+ title: ' Economy Mode (Nighttime)',
+ textFn: function() {
+ return 'The display shows the <strong></strong> (moon) icon.<br>This is the <strong>nighttime/saving</strong> temperature: a few degrees lower to save energy.<br><br> Press <strong>/</strong> to go back to Daytime mode (Comfort).';
+ }
+ },
+ poweron: {
+ cls: 'c-comfort',
+ title: ' Thermostat on',
+ text: 'The thermostat is <strong>turned on</strong> and active.<br>You can also turn it on by pressing the <strong>/</strong> button.'
+ },
+ poweroff: {
+ cls: 'c-off',
+ title: ' Thermostat off (OFF)',
+ text: 'The thermostat is <strong>off</strong>. The display shows "OFF".<br>Heating is disabled.<br><br>To turn it back on: press <strong></strong> or <strong>/</strong>.'
+ },
+ blocked: {
+ cls: 'c-off',
+ title: ' Thermostat off',
+ text: 'The thermostat is off. Press <strong></strong> or <strong>/</strong> to turn it on.'
+ },
+ combo_cf: {
+ cls: 'c-combo',
+ title: '▲+▽ Change unit of measurement',
+ textFn: function() { return 'Unit changed to <strong>°' + S.unit + '</strong>.<br><br>If you see a strange temperature on the display (e.g. 68.4), you probably pressed ▲ and ▽ together by mistake, switching to Fahrenheit. Press them together again to go back to °C.'; }
+ },
+ welcome: {
+ cls: 'c-comfort',
+ title: ' How to use this simulator',
+ text: 'Tap the thermostat buttons to learn what they do.<br>It is currently <strong>on</strong> in <strong>Comfort </strong> mode (daytime).'
+ }
+};
+
+function getMSG() { return currentLang === 'en' ? MSG_EN : MSG_IT; }
+
+// ─── HELPERS ────────────────────────────────────────────
+function cToF(c) { return parseFloat((c * 9/5 + 32).toFixed(1)); }
+function getSetTemp() { return S.mode === 'comfort' ? S.comfortTemp : S.economyTemp; }
+
+function fmtTemp(c) {
+ if (S.unit === 'F') return cToF(c).toFixed(1) + '<span class="lcd-unit">°F</span>';
+ return c.toFixed(1) + '<span class="lcd-unit">°C</span>';
+}
+function fmtSet(c) {
+ var label = currentLang === 'en' ? 'set: ' : 'imp: ';
+ if (S.unit === 'F') return label + cToF(c).toFixed(1) + '°F';
+ return label + c.toFixed(1) + '°C';
+}
+
+// ─── SHOW INFO ─────────────────────────────────────────
+function show(msg) {
+ var p = document.getElementById('infoPanel');
+ p.className = 'info-panel ' + msg.cls;
+ document.getElementById('infoTitle').innerHTML = msg.title;
+ document.getElementById('infoText').innerHTML = msg.textFn ? msg.textFn() : msg.text;
+ p.style.transform = 'scale(0.97)';
+ setTimeout(function() { p.style.transform = ''; }, 120);
+}
+
+// ─── HANDLE BUTTON ─────────────────────────────────────
+function go(btn) {
+ var MSG = getMSG();
+
+ if (btn === 'combo_cf') {
+ S.unit = S.unit === 'C' ? 'F' : 'C';
+ show(MSG.combo_cf);
+ updateDisplay();
+ return;
+ }
+
+ if (!S.power && btn === 'power') {
+ S.power = true;
+ show(MSG.poweron);
+ updateDisplay();
+ return;
+ }
+ if (!S.power && btn === 'mode') {
+ S.power = true;
+ show(MSG.poweron);
+ updateDisplay();
+ return;
+ }
+ if (!S.power) {
+ show(MSG.blocked);
+ return;
+ }
+
+ switch (btn) {
+ case 'up':
+ if (S.mode === 'comfort') {
+ S.comfortTemp = Math.min(40, parseFloat((S.comfortTemp + 0.1).toFixed(1)));
+ } else {
+ S.economyTemp = Math.min(40, parseFloat((S.economyTemp + 0.1).toFixed(1)));
+ }
+ show(MSG.up);
+ break;
+ case 'down':
+ if (S.mode === 'comfort') {
+ S.comfortTemp = Math.max(2, parseFloat((S.comfortTemp - 0.1).toFixed(1)));
+ } else {
+ S.economyTemp = Math.max(2, parseFloat((S.economyTemp - 0.1).toFixed(1)));
+ }
+ show(MSG.down);
+ break;
+ case 'mode':
+ S.mode = S.mode === 'comfort' ? 'economy' : 'comfort';
+ show(MSG[S.mode]);
+ break;
+ case 'power':
+ S.power = false;
+ show(MSG.poweroff);
+ break;
+ }
+ updateDisplay();
+}
+
+// ─── UPDATE LCD ────────────────────────────────────────
+function updateDisplay() {
+ var lcd = document.getElementById('lcd');
+ var temp = document.getElementById('lcdTemp');
+ var set = document.getElementById('lcdSet');
+ var heat = document.getElementById('lcdHeat');
+
+ document.getElementById('ico-comfort').classList.toggle('on', S.power && S.mode === 'comfort');
+ document.getElementById('ico-economy').classList.toggle('on', S.power && S.mode === 'economy');
+
+ if (!S.power) {
+ lcd.classList.add('off');
+ temp.innerHTML = 'OFF';
+ temp.style.fontSize = '2rem';
+ set.textContent = '';
+ heat.classList.remove('on');
+ return;
+ }
+
+ lcd.classList.remove('off');
+ temp.style.fontSize = '';
+
+ var setTemp = getSetTemp();
+ temp.innerHTML = fmtTemp(setTemp);
+ set.textContent = '';
+ heat.classList.remove('on');
+}
+
+// ─── LANGUAGE ──────────────────────────────────────────
+function saveItalianTexts() {
+ document.querySelectorAll('[data-i18n]').forEach(function(el) {
+ italianTexts[el.getAttribute('data-i18n')] = el.innerHTML;
+ });
+}
+
+function applyLanguage(lang) {
+ document.querySelectorAll('[data-i18n]').forEach(function(el) {
+ var key = el.getAttribute('data-i18n');
+ if (lang === 'en' && translations.en[key]) {
+ el.innerHTML = translations.en[key];
+ } else if (lang === 'it' && italianTexts[key]) {
+ el.innerHTML = italianTexts[key];
+ }
+ });
+ document.documentElement.lang = lang;
+}
+
+// ─── ADVANCED PANEL (5-tap secret, 1-tap close) ────────
+var tapCount = 0;
+var tapTimer = null;
+
+document.getElementById('advBar').addEventListener('click', function() {
+ var panel = document.getElementById('advPanel');
+ if (panel.classList.contains('show')) {
+ panel.classList.remove('show');
+ tapCount = 0;
+ return;
+ }
+ tapCount++;
+ clearTimeout(tapTimer);
+ tapTimer = setTimeout(function() { tapCount = 0; }, 2000);
+ if (tapCount >= 5) {
+ tapCount = 0;
+ panel.classList.add('show');
+ setTimeout(function() { panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 50);
+ }
+});
+
+// ─── INIT ──────────────────────────────────────────────
+saveItalianTexts();
+
+// Auto-detect language from URL parameter (?lang=en)
+var urlParams = new URLSearchParams(window.location.search);
+var langParam = urlParams.get('lang');
+if (langParam === 'en') {
+ currentLang = 'en';
+ applyLanguage('en');
+ show(getMSG().welcome);
+}
+
+updateDisplay();
+</script>
+</body>
+</html>
