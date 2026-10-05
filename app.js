@@ -163,7 +163,7 @@
         '<a class="campo" href="tel:' + CONTATTI.telefono + '" style="text-decoration:none"><div><small>' + esc(u("telefono")) + "</small><code>" + CONTATTI.telefonoVisibile + "</code></div><span>📞</span></a>";
     }
     if (v.tipo === "chiavi") {
-      return CHIAVI.map(k => '<div class="chiave">' + (k.colore ? '<i style="background:' + k.colore + '"></i>' : '<i class="tele">📡</i>') + "<span>" + esc(tr(k)) + "</span></div>").join("");
+      return CHIAVI.map((k, i) => '<div class="chiave"><em>' + (i + 1) + "</em>" + (k.colore ? '<i style="background:' + k.colore + '"></i>' : '<i class="tele">📡</i>') + "<span>" + esc(tr(k)) + "</span></div>").join("");
     }
     if (v.tipo === "rifiuti") {
       const oggi = new Date();
