@@ -19,4 +19,6 @@ Rifacimento professionale dell'app `CLAUDE\ATTICO PER INTERNO` (che resta intatt
 - "Disponibilità" porta a `atticopanoramico.it/#disponibilita` nella lingua dell'ospite (`/en/`, `/de/`, `/fr/`; spagnolo → inglese). Il vecchio `/calendario/` non esiste più.
 - Adagio-Adagio: nella vecchia app la mappa era sbagliata (era quella della Campagnola); qui c'è solo il pulsante "Indicazioni".
 - Anteprima: configurazione `attico-ospiti-nuova` (porta 8793) in `CLAUDE\.claude\launch.json`.
-- NON ancora pubblicata online (in attesa di decisione dell'utente).
+- **Anteprima online (provvisoria) dal 2026-10-05:** https://pxh2407.github.io/attico-guida-ospiti/ — repo `pxh2407/attico-guida-ospiti`, branch `main` (push: `git push`). I QR nella casa puntano ancora alla vecchia app.
+- `gh` non è installato: repo e Pages creati via API col token di `git credential fill`.
+- Dopo ogni modifica: aggiornare questo file, incrementare `?v=N` e fare push.
