@@ -97,15 +97,6 @@ strong, b { font-weight: 600; }
 .regola span { font-size: 22px; width: 32px; text-align: center; flex: none; }
 .regola p { margin: 0; font-size: 16px; }
 
-/* Lettera */
-.lettera__testo { font: 400 18px/1.65 var(--serif); color: #2b3240; max-height: 112px; overflow: hidden; position: relative; transition: max-height .4s; }
-.lettera__testo::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 56px; background: linear-gradient(transparent, var(--carta)); }
-.lettera.aperta .lettera__testo { max-height: 1200px; }
-.lettera.aperta .lettera__testo::after { display: none; }
-.lettera__testo p { margin: 12px 0 0; }
-.lettera__firma { font: italic 600 26px var(--serif); color: var(--oro); text-align: right; }
-.link-btn { margin-top: 10px; color: var(--oro); font-weight: 600; }
-
 /* Host e bottoni */
 .host__testa { display: flex; gap: 14px; align-items: center; margin-bottom: 8px; }
 .host__testa img { width: 56px; height: 56px; border-radius: 50%; border: 2px solid var(--oro); object-fit: cover; }

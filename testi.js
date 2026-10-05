@@ -39,7 +39,6 @@ const UI = {
     r_rifiuti: "Rifiuti dalle 20:00, nel cassonetto a sinistra dell'ingresso del garage",
     r_pioggia: "Quando uscite o piove forte, chiudete le finestre della veranda",
     r_clima: "Climatizzatori a 24–26 °C, spenti quando siete fuori",
-    lettera_titolo: "Una lettera per voi", lettera_apri: "Leggi la lettera di benvenuto",
     host_titolo: "Siamo qui per voi", host_testo: "Per qualsiasi necessità scriveteci o chiamateci: rispondiamo di persona.",
     chiama: "Chiama", whatsapp: "WhatsApp",
     torna_titolo: "Tornate a trovarci", torna_testo: "Controllate le date libere per il vostro prossimo soggiorno.",
@@ -72,7 +71,6 @@ const UI = {
     r_rifiuti: "Waste from 8 pm, in the bin to the left of the garage entrance",
     r_pioggia: "When you go out or it rains heavily, close the veranda windows",
     r_clima: "Air conditioners at 24–26 °C, off when you are out",
-    lettera_titolo: "A letter for you", lettera_apri: "Read the welcome letter",
     host_titolo: "We are here for you", host_testo: "For anything at all, message or call us: we answer personally.",
     chiama: "Call", whatsapp: "WhatsApp",
     torna_titolo: "Come back and see us", torna_testo: "Check the free dates for your next stay.",
@@ -105,7 +103,6 @@ const UI = {
     r_rifiuti: "Müll ab 20 Uhr in den Container links von der Garageneinfahrt",
     r_pioggia: "Wenn Sie ausgehen oder es stark regnet, die Verandafenster schließen",
     r_clima: "Klimaanlagen auf 24–26 °C, ausschalten, wenn Sie weg sind",
-    lettera_titolo: "Ein Brief für Sie", lettera_apri: "Begrüßungsbrief lesen",
     host_titolo: "Wir sind für Sie da", host_testo: "Bei jedem Anliegen schreiben oder rufen Sie uns an: wir antworten persönlich.",
     chiama: "Anrufen", whatsapp: "WhatsApp",
     torna_titolo: "Besuchen Sie uns wieder", torna_testo: "Prüfen Sie die freien Termine für Ihren nächsten Aufenthalt.",
@@ -138,7 +135,6 @@ const UI = {
     r_rifiuti: "Déchets à partir de 20 h, dans le conteneur à gauche de l'entrée du garage",
     r_pioggia: "Quand vous sortez ou qu'il pleut fort, fermez les fenêtres de la véranda",
     r_clima: "Climatiseurs à 24–26 °C, éteints quand vous êtes absents",
-    lettera_titolo: "Une lettre pour vous", lettera_apri: "Lire la lettre de bienvenue",
     host_titolo: "Nous sommes là pour vous", host_testo: "Pour toute demande, écrivez-nous ou appelez-nous : nous répondons personnellement.",
     chiama: "Appeler", whatsapp: "WhatsApp",
     torna_titolo: "Revenez nous voir", torna_testo: "Consultez les dates libres pour votre prochain séjour.",
@@ -171,7 +167,6 @@ const UI = {
     r_rifiuti: "Basura desde las 20:00, en el contenedor a la izquierda de la entrada del garaje",
     r_pioggia: "Al salir o con lluvia fuerte, cerrad las ventanas de la veranda",
     r_clima: "Aire acondicionado a 24–26 °C, apagado cuando no estéis",
-    lettera_titolo: "Una carta para vosotros", lettera_apri: "Leer la carta de bienvenida",
     host_titolo: "Estamos aquí para vosotros", host_testo: "Para cualquier necesidad, escribidnos o llamadnos: respondemos en persona.",
     chiama: "Llamar", whatsapp: "WhatsApp",
     torna_titolo: "Volved a visitarnos", torna_testo: "Consultad las fechas libres para vuestra próxima estancia.",
@@ -191,30 +186,6 @@ const UI = {
     rete: "Redes WiFi", password: "Contraseña", notebook: "Nombre del portátil", telefono: "Teléfono",
     installa: "Añádela a la pantalla de inicio para tenerla siempre a mano."
   }
-};
-
-/* ---------------- Lettera di benvenuto ---------------- */
-const LETTERA = {
-  it: [`Gentili ospiti, benvenuti nella nostra casa vacanze a Milazzo! Siamo qui per garantirvi un soggiorno indimenticabile, curando ogni dettaglio per farvi sentire come a casa vostra.`,
-       `La casa è pensata per offrirvi comfort e relax, con una cucina attrezzata, spazi living accoglienti e camere da letto confortevoli.`,
-       `Milazzo vi attende con la sua storia, cultura e bellezze naturali. Siamo felici di condividere con voi i migliori consigli per rendere la vostra esperienza ancora più piacevole.`,
-       `Restiamo a vostra disposizione per qualsiasi necessità.`, `Buon soggiorno!`],
-  en: [`Dear guests, welcome to our holiday home in Milazzo! We are here to make your stay unforgettable, taking care of every detail so that you feel at home.`,
-       `The house is designed for comfort and relaxation, with a fully equipped kitchen, welcoming living areas and comfortable bedrooms.`,
-       `Milazzo awaits you with its history, culture and natural beauty. We are happy to share our best tips to make your experience even more enjoyable.`,
-       `We remain at your disposal for anything you may need.`, `Enjoy your stay!`],
-  de: [`Liebe Gäste, willkommen in unserem Ferienhaus in Milazzo! Wir möchten Ihnen einen unvergesslichen Aufenthalt bereiten und kümmern uns um jedes Detail, damit Sie sich wie zu Hause fühlen.`,
-       `Das Haus ist auf Komfort und Erholung ausgelegt, mit einer voll ausgestatteten Küche, einladenden Wohnbereichen und bequemen Schlafzimmern.`,
-       `Milazzo erwartet Sie mit seiner Geschichte, Kultur und Naturschönheit. Gerne teilen wir unsere besten Tipps, damit Ihr Aufenthalt noch schöner wird.`,
-       `Für alle Anliegen stehen wir Ihnen gerne zur Verfügung.`, `Schönen Aufenthalt!`],
-  fr: [`Chers hôtes, bienvenue dans notre maison de vacances à Milazzo ! Nous sommes là pour vous offrir un séjour inoubliable, en soignant chaque détail pour que vous vous sentiez comme chez vous.`,
-       `La maison est pensée pour le confort et la détente, avec une cuisine équipée, des espaces de vie accueillants et des chambres confortables.`,
-       `Milazzo vous attend avec son histoire, sa culture et ses beautés naturelles. Nous sommes heureux de partager nos meilleurs conseils pour rendre votre séjour encore plus agréable.`,
-       `Nous restons à votre disposition pour tout besoin.`, `Bon séjour !`],
-  es: [`Queridos huéspedes, ¡bienvenidos a nuestra casa de vacaciones en Milazzo! Estamos aquí para que vuestra estancia sea inolvidable, cuidando cada detalle para que os sintáis como en casa.`,
-       `La casa está pensada para el confort y el descanso, con una cocina equipada, salones acogedores y dormitorios cómodos.`,
-       `Milazzo os espera con su historia, su cultura y sus bellezas naturales. Nos alegra compartir nuestros mejores consejos para que vuestra experiencia sea aún más agradable.`,
-       `Quedamos a vuestra disposición para cualquier necesidad.`, `¡Feliz estancia!`]
 };
 
 /* ---------------- Raccolta rifiuti ----------------

@@ -103,12 +103,6 @@
       .catch(() => {});
   }
 
-  /* ---------- Lettera ---------- */
-  function lettera() {
-    const p = LETTERA[L] || LETTERA.it;
-    $("#lettera").innerHTML = p.map(x => "<p>" + esc(x) + "</p>").join("") + '<p class="lettera__firma">Grazia</p>';
-  }
-
   /* ---------- Guida ---------- */
   function guida() {
     $("#chips").innerHTML = GUIDA.map(c => '<button class="chip" data-cat="' + c.id + '">' + c.icona + " " + esc(tr(c.titolo)) + "</button>").join("");
@@ -310,7 +304,7 @@
   }
 
   function disegnaTutto() {
-    applicaUI(); aggiornaLinkSito(); aggiornaOggi(); lettera(); guida(); dintorni(); numeri(); mostraMeteo();
+    applicaUI(); aggiornaLinkSito(); aggiornaOggi(); guida(); dintorni(); numeri(); mostraMeteo();
   }
 
   /* ---------- Eventi ---------- */
@@ -328,7 +322,6 @@
     }
   });
   $("#langBtn").addEventListener("click", apriLingue);
-  $("#letteraBtn").addEventListener("click", () => { $(".lettera").classList.add("aperta"); $("#letteraBtn").hidden = true; });
   $("#schedaChiudi").addEventListener("click", () => chiudiScheda());
   $("#schedaAscolta").addEventListener("click", leggi);
   velo.addEventListener("click", () => chiudiScheda());
