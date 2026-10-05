@@ -17,7 +17,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=9">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+  <link rel="stylesheet" href="style.css?v=11">
 </head>
 <body>
 
@@ -95,7 +96,6 @@
         <p data-t="host_testo"></p>
         <div class="bottoni">
           <a class="btn btn--wa" id="hostWa" target="_blank" rel="noopener"><span>💬</span><b data-t="whatsapp">WhatsApp</b></a>
-          <a class="btn btn--chiaro" id="hostTel"><span>📞</span><b data-t="chiama">Chiama</b></a>
         </div>
       </article>
 
@@ -127,6 +127,8 @@
     <div class="contenuto contenuto--pagina">
       <h1 class="titolo-pag" data-t="dintorni_titolo">Dintorni</h1>
       <p class="sotto-pag" data-t="dintorni_sotto"></p>
+      <nav class="chips chips--mappa" id="filtriMappa"></nav>
+      <div class="mappa-grande" id="mappaGrande"></div>
       <div id="dintorni"></div>
       <h2 class="titolo-sez" data-t="cose_da_fare">Cose da fare</h2>
       <div class="esperienze" id="esperienze"></div>
@@ -145,11 +147,10 @@
       <article class="card host host--piccolo">
         <div class="host__testa">
           <img src="images/Attico.jpg" alt="" width="48" height="48">
-          <div><h2 class="titolo-card" data-t="host_breve">I vostri host</h2><p class="sotto" id="hostNumero"></p></div>
+          <div><h2 class="titolo-card" data-t="host_breve">I vostri host</h2><p class="sotto" data-t="scrivici"></p></div>
         </div>
         <div class="bottoni">
           <a class="btn btn--wa" id="hostWa2" target="_blank" rel="noopener"><span>💬</span><b data-t="whatsapp">WhatsApp</b></a>
-          <a class="btn btn--chiaro" id="hostTel2"><span>📞</span><b data-t="chiama">Chiama</b></a>
         </div>
       </article>
       <div id="numeri"></div>
@@ -180,7 +181,8 @@
 
 <div class="avviso-copia" id="toast" hidden></div>
 
-<script src="testi.js?v=9"></script>
-<script src="app.js?v=9"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="testi.js?v=11"></script>
+<script src="app.js?v=11"></script>
 </body>
 </html>

@@ -140,7 +140,25 @@ strong, b { font-weight: 600; }
 .luogo__info { padding: 12px 14px; flex: 1; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
 .luogo__nome { font-weight: 600; font-size: 17px; color: var(--blu); }
 .luogo__desc { font-size: 14.5px; color: var(--tenue); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.luogo__azione { margin-top: auto; font-size: 14px; color: var(--oro); font-weight: 600; }
+.luogo__azione { margin-top: auto; font-size: 14px; color: var(--blu-2); font-weight: 600; }
+.luogo__foto--icona { background: linear-gradient(145deg, var(--c), color-mix(in srgb, var(--c) 62%, #14233c)); }
+.luogo__foto--icona span { width: 56px; height: 56px; border-radius: 50%; background: rgba(255,255,255,.95); display: grid; place-items: center; font-size: 28px; box-shadow: 0 4px 12px rgba(0,0,0,.18); }
+/* Mappe */
+.mappa-grande { height: min(58vh, 420px); border-radius: var(--r); overflow: hidden; box-shadow: var(--ombra); margin: 6px 0 4px; background: #e9eef2; z-index: 0; }
+.mini-mappa { height: 250px; border-radius: 14px; overflow: hidden; margin: 2px 0 8px; background: #e9eef2; border: 1px solid var(--linea); z-index: 0; }
+.mini-mappa__nota { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; font-size: 15px; color: var(--tenue); margin: 0 2px 12px !important; }
+.mini-mappa__nota b { color: var(--blu); }
+.chips--mappa { margin-top: 0; }
+.chip i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--c); margin-right: 7px; vertical-align: 1px; }
+.chip--on { background: var(--blu); color: #fff; border-color: var(--blu); }
+.pin { position: relative; display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50% 50% 50% 6px; transform: rotate(-45deg); background: var(--c); border: 3px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,.3); }
+.pin > span { transform: rotate(45deg); font-size: 18px; line-height: 1; }
+.pin--casa { background: var(--blu); border-color: var(--oro); width: 44px; height: 44px; }
+.leaflet-container { font-family: var(--sans); }
+.tessere-mappa { filter: saturate(.75) brightness(1.03); }   /* colori più tenui, in tono con l'app */
+.leaflet-control-attribution { font-size: 10px; }
+.leaflet-bar a { width: 34px !important; height: 34px !important; line-height: 34px !important; font-size: 18px !important; }
+
 .esperienze { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .esperienza { background: var(--carta); border-radius: 14px; box-shadow: var(--ombra); padding: 14px; text-decoration: none; color: var(--testo); display: flex; gap: 10px; align-items: center; font-size: 15px; font-weight: 500; line-height: 1.3; }
 .esperienza span { font-size: 22px; }
@@ -229,8 +247,7 @@ strong, b { font-weight: 600; }
 .giorno.vuoto-g { opacity: .6; font-style: italic; }
 .orologio { display: block; width: 100%; max-width: 360px; margin: 6px auto 16px; }
 .video { position: relative; padding-top: 56.25%; border-radius: 14px; overflow: hidden; margin-bottom: 14px; background: #000; }
-.video iframe, .mappa iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-.mappa { position: relative; height: 300px; border-radius: 14px; overflow: hidden; margin: 0 0 14px; background: var(--crema); }
+.video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .scheda .bottoni { margin: 4px 0 14px; }
 
 /* Lingue */

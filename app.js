@@ -23,7 +23,7 @@
   const VOCI = {};
   GUIDA.forEach(c => c.voci.forEach(v => { VOCI[v.id] = v; }));
   const LUOGHI = {};
-  DINTORNI.forEach(c => c.luoghi.forEach((l, i) => { l._id = l.id || (c.icona + i + tr(l.nome)); LUOGHI[l._id] = l; }));
+  DINTORNI.forEach(c => c.luoghi.forEach((l, i) => { l._id = l.id || (c.id + i); l._cat = c; LUOGHI[l._id] = l; }));
 
   /* ---------- Testi fissi dell'interfaccia ---------- */
   function applicaUI() {
@@ -39,8 +39,6 @@
   /* ---------- Contatti ---------- */
   function contatti() {
     ["#hostWa", "#hostWa2"].forEach(s => { $(s).href = CONTATTI.whatsapp; });
-    ["#hostTel", "#hostTel2"].forEach(s => { $(s).href = "tel:" + CONTATTI.telefono; });
-    $("#hostNumero").textContent = CONTATTI.telefonoVisibile;
     $("#codici").textContent = "CIR " + CONTATTI.cir + " · CIN " + CONTATTI.cin;
   }
 
@@ -114,7 +112,7 @@
   function filtra() {
     const q = $("#cerca").value.trim().toLowerCase();
     let visibili = 0;
-    $$(".categoria").forEach(sec => {
+    $$("#guida .categoria").forEach(sec => {
       let n = 0;
       $$(".voce", sec).forEach(b => { const ok = !q || b.dataset.cerca.includes(q); b.hidden = !ok; if (ok) n++; });
       sec.hidden = n === 0; visibili += n;
@@ -123,14 +121,84 @@
     $("#chips").hidden = !!q;
   }
 
-  /* ---------- Dintorni ---------- */
+  /* ---------- Dintorni e mappe (Leaflet + OpenStreetMap/CARTO) ---------- */
+  const LF = window.L;                      // Leaflet (qui la variabile L è la lingua)
+  const CASA = [CONTATTI.casa.lat, CONTATTI.casa.lng];
+  function metri(a, b) {
+    const R = 6371000, r = x => x * Math.PI / 180;
+    const dLa = r(b[0] - a[0]), dLo = r(b[1] - a[1]);
+    const h = Math.sin(dLa / 2) ** 2 + Math.cos(r(a[0])) * Math.cos(r(b[0])) * Math.sin(dLo / 2) ** 2;
+    return 2 * R * Math.asin(Math.sqrt(h));
+  }
+  // Distanza stimata sul percorso reale (linea d'aria × 1,3) e tempo a piedi (~4,5 km/h)
+  function distanza(l) {
+    const m = metri(CASA, l.pos) * 1.3;
+    const loc = infoLingua().voce;
+    if (l.auto) return "🚗 " + u("circa") + " " + Math.round(m / 1000) + " km";
+    const min = Math.max(2, Math.round(m / 75));
+    const dist = m < 1000 ? Math.round(m / 10) * 10 + " m" : (m / 1000).toLocaleString(loc, { maximumFractionDigits: 1 }) + " km";
+    return "🚶 " + min + " min · " + dist;
+  }
+  function tessera(l) {
+    return l.foto
+      ? '<span class="luogo__foto" style="background-image:url(\'images/' + encodeURI(l.foto) + '\')"></span>'
+      : '<span class="luogo__foto luogo__foto--icona" style="--c:' + l._cat.colore + '"><span>' + (l.icona || l._cat.icona) + "</span></span>";
+  }
   function schedeLuoghi(c) {
     return '<div class="luoghi">' +
-      c.luoghi.map(l => '<button class="luogo" data-luogo="' + esc(l._id) + '"><span class="luogo__foto"' +
-        (l.foto ? ' style="background-image:url(\'images/' + encodeURI(l.foto) + '\')"' : "") + ">" + (l.foto ? "" : (l.icona || c.icona)) +
-        '</span><span class="luogo__info"><span class="luogo__nome">' + esc(tr(l.nome)) + '</span><span class="luogo__desc">' + esc(tr(l.desc)) +
-        '</span><span class="luogo__azione">🧭 ' + esc(u("indicazioni")) + " · " + esc(l.auto ? u("in_auto") : u("a_piedi")) + "</span></span></button>").join("") +
+      c.luoghi.map(l => '<button class="luogo" data-luogo="' + esc(l._id) + '">' + tessera(l) +
+        '<span class="luogo__info"><span class="luogo__nome">' + esc(tr(l.nome)) + '</span><span class="luogo__desc">' + esc(tr(l.desc)) +
+        '</span><span class="luogo__azione">' + esc(distanza(l)) + "</span></span></button>").join("") +
       "</div>";
+  }
+  function iconaPin(emoji, colore, casa) {
+    return LF.divIcon({ className: "", iconSize: [38, 46], iconAnchor: [19, 44],
+      html: '<span class="pin' + (casa ? " pin--casa" : "") + '" style="--c:' + colore + '"><span>' + emoji + "</span></span>" });
+  }
+  // Sul telefono la mappa grande non "cattura" il dito: si sposta con due dita, così la pagina scorre normalmente
+  function nuovaMappa(el, trascinabile) {
+    const touch = "ontouchstart" in window;
+    const m = LF.map(el, { zoomControl: true, dragging: !touch || trascinabile, scrollWheelZoom: false, tap: false });
+    LF.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19, className: "tessere-mappa",
+      attribution: '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>'
+    }).addTo(m);
+    LF.marker(CASA, { icon: iconaPin("🏠", "#14233c", true), zIndexOffset: 1000, title: u("appartamento") }).addTo(m);
+    return m;
+  }
+  // Mappa generale della pagina Dintorni, con i filtri per categoria
+  let mappaG = null, strato = null, filtro = "tutti";
+  function disegnaMappaGrande() {
+    if (!LF) { $("#mappaGrande").hidden = true; $("#filtriMappa").hidden = true; return; }
+    if (!mappaG) { mappaG = nuovaMappa($("#mappaGrande"), false); strato = LF.layerGroup().addTo(mappaG); }
+    strato.clearLayers();
+    const punti = [CASA];
+    DINTORNI.filter(c => filtro === "tutti" || c.id === filtro).forEach(c => c.luoghi.forEach(l => {
+      LF.marker(l.pos, { icon: iconaPin(l.icona || c.icona, c.colore), title: tr(l.nome) })
+        .on("click", () => apriLuogo(l._id)).addTo(strato);
+      if (!l.auto || filtro !== "tutti") punti.push(l.pos);   // la Piscina di Venere (lontana) non allarga la vista generale
+    }));
+    mappaG.invalidateSize();
+    mappaG.fitBounds(punti, { padding: [30, 30], maxZoom: 17 });
+  }
+  function filtriMappa() {
+    $("#filtriMappa").innerHTML = '<button class="chip' + (filtro === "tutti" ? " chip--on" : "") + '" data-filtro="tutti">' + esc(u("tutti")) + "</button>" +
+      DINTORNI.map(c => '<button class="chip' + (filtro === c.id ? " chip--on" : "") + '" data-filtro="' + c.id + '" style="--c:' + c.colore + '"><i></i>' + esc(tr(c.cat)) + "</button>").join("");
+  }
+  // Mappa piccola dentro la scheda di un luogo: casa + destinazione
+  let mappaP = null;
+  function chiudiMappaPiccola() { if (mappaP) { mappaP.remove(); mappaP = null; } }
+  function mappaPiccola(l) {
+    const el = $("#miniMappa");
+    if (!LF || !el) return;
+    mappaP = nuovaMappa(el, true);
+    LF.marker(l.pos, { icon: iconaPin(l.icona || l._cat.icona, l._cat.colore) }).addTo(mappaP);
+    const adatta = () => { if (mappaP) { mappaP.invalidateSize(); mappaP.fitBounds([CASA, l.pos], { padding: [44, 44], maxZoom: 17 }); } };
+    adatta(); setTimeout(adatta, 380);
+  }
+  function bloccoLuogo(l) {
+    return '<div class="mini-mappa" id="miniMappa"></div><p class="mini-mappa__nota"><span>🏠 ' + esc(u("appartamento")) + " → 📍</span><b>" + esc(distanza(l)) + "</b></p>" +
+      '<div class="bottoni"><a class="btn btn--oro" href="' + urlPercorso(l) + '" target="_blank" rel="noopener"><span>🧭</span><b>' + esc(u("indicazioni")) + " · " + esc(l.auto ? u("in_auto") : u("a_piedi")) + "</b></a></div>";
   }
   // Pulsante "Mangiare": solo la prima categoria (ristoranti e bar)
   function apriMangiare() {
@@ -141,6 +209,7 @@
     $("#dintorni").innerHTML = DINTORNI.map(c =>
       '<section class="categoria"><h2><span>' + c.icona + "</span>" + esc(tr(c.cat)) + "</h2>" + schedeLuoghi(c) + "</section>").join("");
     $("#esperienze").innerHTML = ESPERIENZE.map(e => '<a class="esperienza" href="' + e.url + '" target="_blank" rel="noopener"><span>' + e.icona + "</span>" + esc(tr(e)) + "</a>").join("");
+    filtriMappa();
   }
 
   /* ---------- Numeri ---------- */
@@ -161,7 +230,7 @@
   function speciale(v) {
     if (v.tipo === "wifi") {
       return campo(u("rete"), CONTATTI.wifiReti) + campo(u("password"), CONTATTI.wifiPassword, true) + campo(u("notebook"), CONTATTI.notebook) +
-        '<a class="campo" href="tel:' + CONTATTI.telefono + '" style="text-decoration:none"><div><small>' + esc(u("telefono")) + "</small><code>" + CONTATTI.telefonoVisibile + "</code></div><span>📞</span></a>";
+        '<div class="bottoni"><a class="btn btn--wa" href="' + CONTATTI.whatsapp + '" target="_blank" rel="noopener"><span>💬</span><b>' + esc(u("scrivici")) + "</b></a></div>";
     }
     if (v.tipo === "chiavi") {
       return CHIAVI.map((k, i) => '<div class="chiave"><em>' + (i + 1) + "</em>" + (k.colore ? '<i style="background:' + k.colore + '"></i>' : '<i class="tele">📡</i>') + "<span>" + esc(tr(k)) + "</span></div>").join("");
@@ -213,7 +282,7 @@
   const scheda = $("#scheda"), velo = $("#velo");
   let schedaAperta = false;
   function apriScheda(icona, titolo, html) {
-    fermaVoce();
+    fermaVoce(); chiudiMappaPiccola();
     $("#schedaIcona").textContent = icona;
     $("#schedaTitolo").textContent = titolo;
     const corpo = $("#schedaCorpo");
@@ -230,7 +299,7 @@
     schedaAperta = false;
     scheda.classList.remove("on"); velo.classList.remove("on");
     document.body.style.overflow = "";
-    setTimeout(() => { if (!schedaAperta) { scheda.hidden = true; velo.hidden = true; $("#schedaCorpo").innerHTML = ""; } }, 320);
+    setTimeout(() => { if (!schedaAperta) { chiudiMappaPiccola(); scheda.hidden = true; velo.hidden = true; $("#schedaCorpo").innerHTML = ""; } }, 320);
     if (!daStoria) history.back();
   }
   function apriVoce(id) {
@@ -240,9 +309,12 @@
     else if (v.tipo === "silenzio") h = tr(v.corpo) + speciale(v);
     else h = fotoHTML(v.foto) + speciale(v) + tr(v.corpo);
     if (v.video) h += '<div class="video"><iframe src="' + v.video + '" title="' + esc(tr(v.titolo)) + '" loading="lazy" allow="encrypted-media; picture-in-picture" allowfullscreen></iframe></div>';
-    if (v.simulatore) h += '<div class="bottoni"><a class="btn btn--oro" href="termostato.html"><span>🎛️</span><b>' + esc(u("apri_simulatore")) + "</b></a></div>";
-    if (v.luogo && LUOGHI[v.luogo]) h += '<div class="bottoni"><a class="btn btn--oro" href="' + urlPercorso(LUOGHI[v.luogo]) + '" target="_blank" rel="noopener"><span>🧭</span><b>' + esc(u("indicazioni")) + "</b></a></div>";
+    // il simulatore esiste in italiano e in inglese
+    if (v.simulatore) h += '<div class="bottoni"><a class="btn btn--oro" href="termostato.html' + (L === "it" ? "" : "?lang=en") + '"><span>🎛️</span><b>' + esc(u("apri_simulatore")) + "</b></a></div>";
+    const lv = v.luogo && LUOGHI[v.luogo];
+    if (lv) h += bloccoLuogo(lv);
     apriScheda(v.icona, tr(v.titolo), h);
+    if (lv) mappaPiccola(lv);
   }
   function urlPercorso(l) {
     return "https://www.google.com/maps/dir/?api=1&origin=" + CONTATTI.casa.lat + "," + CONTATTI.casa.lng +
@@ -251,13 +323,12 @@
   function apriLuogo(id) {
     const l = LUOGHI[id]; if (!l) return;
     let h = l.foto ? fotoHTML([l.foto]) : "";
-    h += "<p>" + esc(tr(l.desc)) + "</p>";
-    h += '<div class="bottoni"><a class="btn btn--oro" href="' + urlPercorso(l) + '" target="_blank" rel="noopener"><span>🧭</span><b>' + esc(u("indicazioni")) + " · " + esc(l.auto ? u("in_auto") : u("a_piedi")) + "</b></a></div>";
+    h += "<p>" + esc(tr(l.desc)) + "</p>" + bloccoLuogo(l);
     if (l.tel) h += '<div class="bottoni">' + l.tel.map((t, i) => '<a class="btn btn--chiaro" href="tel:' + t + '"><span>📞</span><b>' + (l.telNomi ? esc(l.telNomi[i]) + " · " : "") + fmtNum(t.replace(/^\+39/, "")) + "</b></a>").join("") + "</div>";
     if (l.turni) h += '<div class="bottoni"><a class="btn btn--chiaro" href="https://milazzo.comune.digital/farmacie-di-turno/c/0" target="_blank" rel="noopener"><span>💊</span><b>' + esc(u("farmacie_turno")) + "</b></a></div>";
     if (l.tour) h += '<div class="bottoni"><a class="btn btn--chiaro" href="https://www.innovame.it/castellomilazzo/" target="_blank" rel="noopener"><span>🏰</span><b>' + esc(u("tour_virtuale")) + "</b></a></div>";
-    if (l.mappa) h += '<p class="piccolo">' + esc(u("percorso")) + '</p><div class="mappa"><iframe src="' + l.mappa + '" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="' + esc(tr(l.nome)) + '"></iframe></div>';
-    apriScheda("📍", tr(l.nome), h);
+    apriScheda(l.icona || l._cat.icona, tr(l.nome), h);
+    mappaPiccola(l);
   }
   function apriLingue() {
     apriScheda("🌐", u("lingua"), '<div class="lingue">' + LINGUE.map(l =>
@@ -298,6 +369,7 @@
     if (location.hash.slice(1) !== nome) history.replaceState(history.state, "", "#" + nome);
     if (scorri) window.scrollTo(0, 0);
     aggiornaBarra();
+    if (nome === "dintorni") disegnaMappaGrande();   // la mappa va disegnata quando la pagina è visibile
   }
   function aggiornaBarra() {
     const home = !$("#v-home").hidden;
@@ -306,12 +378,14 @@
 
   function disegnaTutto() {
     applicaUI(); aggiornaOggi(); guida(); dintorni(); numeri(); mostraMeteo();
+    if (mappaG && !$("#v-dintorni").hidden) disegnaMappaGrande();
   }
 
   /* ---------- Eventi ---------- */
   document.addEventListener("click", e => {
-    const t = e.target.closest("[data-apri],[data-vai],[data-luogo],[data-cat],[data-copia],[data-lingua]");
+    const t = e.target.closest("[data-apri],[data-vai],[data-luogo],[data-cat],[data-copia],[data-lingua],[data-filtro]");
     if (!t) return;
+    if (t.dataset.filtro) { filtro = t.dataset.filtro; filtriMappa(); disegnaMappaGrande(); return; }
     if (t.dataset.vai) { e.preventDefault(); vai(t.dataset.vai); }
     else if (t.dataset.apri) apriVoce(t.dataset.apri);
     else if (t.dataset.luogo) apriLuogo(t.dataset.luogo);

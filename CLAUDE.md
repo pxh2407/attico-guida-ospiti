@@ -14,7 +14,18 @@ Rifacimento professionale dell'app `CLAUDE\ATTICO PER INTERNO` (che resta intatt
 - Lingua automatica dal telefono, ricordata; ricerca nella guida; lettura ad alta voce; copia password WiFi.
 - Calendario rifiuti: `RIFIUTI_CALENDARIO` in testi.js (indice 0 = domenica). Se cambia, aggiornare anche la vecchia app e le locandine.
 
+## Contatti con l'host: SOLO messaggi
+- Dal 2026-10-05 nessun pulsante "Chiama" verso l'host (ospiti quasi tutti stranieri, l'utente preferisce scrivere): solo WhatsApp. Restano chiamabili i numeri dei ristoranti, della Guardia medica e delle emergenze.
+
+## Mappe (2026-10-05)
+- Leaflet 1.9.4 da cdnjs + tessere **OpenStreetMap standard** (`tile.openstreetmap.org`). ⚠️ CARTO ora chiede una API key: non usarlo.
+- In `app.js` la variabile `L` è la LINGUA: Leaflet si usa come `LF = window.L`.
+- Ogni luogo ha `pos: [lat, lng]`; distanza/tempo a piedi stimati (linea d'aria × 1,3, ~4,5 km/h). Pagina Dintorni: mappa generale con filtri per categoria; scheda di ogni luogo: mappa piccola casa→luogo + pulsante Google Maps.
+- Le vecchie "foto" dei luoghi erano schermate di percorsi Google: tolte. Restano solo foto vere (Conad, colonnina EV, Castello, Piscina di Venere).
+
 ## Note
+- Termostato: dalle lingue diverse dall'italiano si apre `termostato.html?lang=en`; aggiunto pulsante dorato "←" per tornare indietro.
+- Immagini non usate tolte da questa cartella (gli originali restano in `ATTICO PER INTERNO\images`); `Cambio-Biancheria.jpg` compressa (era PNG da 1,2 MB).
 - Pulsante rapido "Mangiare" (`#btnMangiare`): apre una scheda con SOLO la prima categoria di DINTORNI (ristoranti e bar), non la pagina Dintorni intera.
 - Recensioni tolte su richiesta (2026-10-05): gli ospiti le hanno già viste prima di prenotare.
 - Lettera di benvenuto tolta su richiesta (2026-10-05). Il testo originale resta nella vecchia app.
