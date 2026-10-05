@@ -210,7 +210,7 @@ const GUIDA = [
     voci: [
       { id: "wifi", icona: "📶", tipo: "wifi",
         titolo: { it: "WiFi e contatti", en: "WiFi & contacts", de: "WLAN & Kontakte", fr: "WiFi et contacts", es: "WiFi y contactos" } },
-      { id: "chiavi", icona: "🔑", tipo: "chiavi", foto: ["Chiavi2-1.jpg"],
+      { id: "chiavi", icona: "🔑", tipo: "chiavi", foto: ["Chiavi.jpg"],
         titolo: { it: "Chiavi", en: "Keys", de: "Schlüssel", fr: "Clés", es: "Llaves" } },
       { id: "imposta", icona: "🧾", foto: ["Imposta-di-soggiorno.jpg"],
         titolo: { it: "Imposta di soggiorno", en: "Tourist tax", de: "Kurtaxe", fr: "Taxe de séjour", es: "Tasa turística" },
