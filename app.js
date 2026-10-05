@@ -225,7 +225,8 @@
   /* ---------- Contenuti speciali delle schede ---------- */
   function fotoHTML(lista) {
     if (!lista || !lista.length) return "";
-    return '<div class="foto">' + lista.map(f => '<img src="images/' + encodeURI(f) + '" alt="" loading="lazy">').join("") + "</div>";
+    // solo telefono: foto a tutta larghezza, una sotto l'altra (niente strisce da scorrere di lato)
+    return lista.map(f => '<img class="foto-in" src="images/' + encodeURI(f) + '" alt="" loading="lazy">').join("");
   }
   function speciale(v) {
     if (v.tipo === "wifi") {

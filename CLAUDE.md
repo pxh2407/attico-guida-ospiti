@@ -23,6 +23,11 @@ Rifacimento professionale dell'app `CLAUDE\ATTICO PER INTERNO` (che resta intatt
 - Ogni luogo ha `pos: [lat, lng]`; distanza/tempo a piedi stimati (linea d'aria × 1,3, ~4,5 km/h). Pagina Dintorni: mappa generale con filtri per categoria; scheda di ogni luogo: mappa piccola casa→luogo + pulsante Google Maps.
 - Le vecchie "foto" dei luoghi erano schermate di percorsi Google: tolte. Restano solo foto vere (Conad, colonnina EV, Castello, Piscina di Venere).
 
+## Solo telefono (decisione 2026-10-06)
+- L'app si usa SOLO su cellulare: foto sempre a tutta larghezza, una sotto l'altra, mai tagliate (`.foto-in`, `object-fit: contain`); niente gallerie a scorrimento laterale.
+- Dove una scheda ha più foto, ognuna sta DENTRO il testo (in `corpo`, tutte e 5 le lingue) sopra la frase che descrive: rifiuti, luce veranda, videoproiettore.
+- Luce veranda: `Luce-Veranda1.jpg` = cucina (etichetta "VERANDA LIGHT SWITCH"), `Luci-Veranda2.jpg` = bagno (accanto a "ACQUA CALDA"). Nella vecchia app i testi alternativi erano invertiti.
+
 ## Note
 - Termostato: dalle lingue diverse dall'italiano si apre `termostato.html?lang=en`; aggiunto pulsante dorato "←" per tornare indietro.
 - Immagini non usate tolte da questa cartella (gli originali restano in `ATTICO PER INTERNO\images`); `Cambio-Biancheria.jpg` compressa (era PNG da 1,2 MB).

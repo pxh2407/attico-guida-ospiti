@@ -328,14 +328,14 @@ const GUIDA = [
           fr: `<ol class="passi"><li>Descendez au <strong>rez-de-chaussée</strong>, à droite de l'ascenseur</li><li>Ouvrez la <strong>porte coulissante de droite</strong> de l'armoire</li><li>Réenclenchez le compteur indiqué par la flèche portant le nom <strong>« Russo »</strong></li></ol>`,
           es: `<ol class="passi"><li>Bajad a la <strong>planta baja</strong>, a la derecha del ascensor</li><li>Abrid la <strong>puerta corredera derecha</strong> del armario</li><li>Reactivad el contador señalado con la flecha y el nombre <strong>«Russo»</strong></li></ol>`
         } },
-      { id: "luceveranda", icona: "💡", foto: ["Luci-Veranda2.jpg", "Luce-Veranda1.jpg"],
+      { id: "luceveranda", icona: "💡",
         titolo: { it: "Luce balcone-veranda", en: "Balcony-veranda light", de: "Licht Balkon-Veranda", fr: "Lumière balcon-véranda", es: "Luz del balcón-veranda" },
         corpo: {
-          it: `<p>Due interruttori:</p><div class="tab"><div><span>Cucina</span><strong>accanto al frigorifero</strong></div><div><span>Bagno di sinistra</span><strong>accanto all'interruttore dell'acqua calda</strong></div></div>`,
-          en: `<p>Two switches:</p><div class="tab"><div><span>Kitchen</span><strong>next to the fridge</strong></div><div><span>Left bathroom</span><strong>next to the hot water switch</strong></div></div>`,
-          de: `<p>Zwei Schalter:</p><div class="tab"><div><span>Küche</span><strong>neben dem Kühlschrank</strong></div><div><span>Linkes Bad</span><strong>neben dem Warmwasserschalter</strong></div></div>`,
-          fr: `<p>Deux interrupteurs :</p><div class="tab"><div><span>Cuisine</span><strong>à côté du réfrigérateur</strong></div><div><span>Salle de bain de gauche</span><strong>à côté de l'interrupteur d'eau chaude</strong></div></div>`,
-          es: `<p>Dos interruptores:</p><div class="tab"><div><span>Cocina</span><strong>junto a la nevera</strong></div><div><span>Baño izquierdo</span><strong>junto al interruptor del agua caliente</strong></div></div>`
+          it: `<p>Due interruttori:</p><img class="foto-in" src="images/Luce-Veranda1.jpg" alt="" loading="lazy"><p class="evid"><strong>Cucina</strong> — accanto al frigorifero</p><img class="foto-in" src="images/Luci-Veranda2.jpg" alt="" loading="lazy"><p class="evid"><strong>Bagno di sinistra</strong> — accanto all'interruttore dell'acqua calda</p>`,
+          en: `<p>Two switches:</p><img class="foto-in" src="images/Luce-Veranda1.jpg" alt="" loading="lazy"><p class="evid"><strong>Kitchen</strong> — next to the fridge</p><img class="foto-in" src="images/Luci-Veranda2.jpg" alt="" loading="lazy"><p class="evid"><strong>Left bathroom</strong> — next to the hot water switch</p>`,
+          de: `<p>Zwei Schalter:</p><img class="foto-in" src="images/Luce-Veranda1.jpg" alt="" loading="lazy"><p class="evid"><strong>Küche</strong> — neben dem Kühlschrank</p><img class="foto-in" src="images/Luci-Veranda2.jpg" alt="" loading="lazy"><p class="evid"><strong>Linkes Bad</strong> — neben dem Warmwasserschalter</p>`,
+          fr: `<p>Deux interrupteurs :</p><img class="foto-in" src="images/Luce-Veranda1.jpg" alt="" loading="lazy"><p class="evid"><strong>Cuisine</strong> — à côté du réfrigérateur</p><img class="foto-in" src="images/Luci-Veranda2.jpg" alt="" loading="lazy"><p class="evid"><strong>Salle de bain de gauche</strong> — à côté de l'interrupteur d'eau chaude</p>`,
+          es: `<p>Dos interruptores:</p><img class="foto-in" src="images/Luce-Veranda1.jpg" alt="" loading="lazy"><p class="evid"><strong>Cocina</strong> — junto a la nevera</p><img class="foto-in" src="images/Luci-Veranda2.jpg" alt="" loading="lazy"><p class="evid"><strong>Baño izquierdo</strong> — junto al interruptor del agua caliente</p>`
         } },
       { id: "usb", icona: "🔋", foto: ["Stazione-di-ricarica.jpg"],
         titolo: { it: "Stazione di ricarica USB", en: "USB charging station", de: "USB-Ladestation", fr: "Station de recharge USB", es: "Estación de carga USB" },
@@ -346,14 +346,14 @@ const GUIDA = [
           fr: `<p>Sur le meuble du salon : <strong>6 ports USB 3.0</strong> pour recharger jusqu'à six appareils à la fois.</p>`,
           es: `<p>En el mueble del salón: <strong>6 puertos USB 3.0</strong> para cargar hasta seis dispositivos a la vez.</p>`
         } },
-      { id: "proiettore", icona: "🎬", foto: ["IMG_20230113_084239-1.jpg", "Telecomandi.jpg"],
+      { id: "proiettore", icona: "🎬",
         titolo: { it: "Videoproiettore", en: "Projector", de: "Beamer", fr: "Vidéoprojecteur", es: "Proyector" },
         corpo: {
-          it: `<p>L'interruttore è <strong>a sinistra della porta d'ingresso della sala</strong>.</p><div class="tab"><div><span>Telecomando 1</span><strong>per muoversi nello schermo</strong></div><div><span>Telecomando 2</span><strong>accensione e spegnimento (tasto rosso)</strong></div></div>`,
-          en: `<p>The switch is <strong>to the left of the living room door</strong>.</p><div class="tab"><div><span>Remote 1</span><strong>to move around the screen</strong></div><div><span>Remote 2</span><strong>on and off (red button)</strong></div></div>`,
-          de: `<p>Der Schalter ist <strong>links neben der Wohnzimmertür</strong>.</p><div class="tab"><div><span>Fernbedienung 1</span><strong>Navigation auf dem Bildschirm</strong></div><div><span>Fernbedienung 2</span><strong>Ein / Aus (rote Taste)</strong></div></div>`,
-          fr: `<p>L'interrupteur est <strong>à gauche de la porte du salon</strong>.</p><div class="tab"><div><span>Télécommande 1</span><strong>pour se déplacer sur l'écran</strong></div><div><span>Télécommande 2</span><strong>marche / arrêt (bouton rouge)</strong></div></div>`,
-          es: `<p>El interruptor está <strong>a la izquierda de la puerta del salón</strong>.</p><div class="tab"><div><span>Mando 1</span><strong>para moverse por la pantalla</strong></div><div><span>Mando 2</span><strong>encendido y apagado (botón rojo)</strong></div></div>`
+          it: `<img class="foto-in" src="images/IMG_20230113_084239-1.jpg" alt="" loading="lazy"><p>L'interruttore è <strong>a sinistra della porta d'ingresso della sala</strong>.</p><img class="foto-in" src="images/Telecomandi.jpg" alt="" loading="lazy"><div class="tab"><div><span>Telecomando 1</span><strong>per muoversi nello schermo</strong></div><div><span>Telecomando 2</span><strong>accensione e spegnimento (tasto rosso)</strong></div></div>`,
+          en: `<img class="foto-in" src="images/IMG_20230113_084239-1.jpg" alt="" loading="lazy"><p>The switch is <strong>to the left of the living room door</strong>.</p><img class="foto-in" src="images/Telecomandi.jpg" alt="" loading="lazy"><div class="tab"><div><span>Remote 1</span><strong>to move around the screen</strong></div><div><span>Remote 2</span><strong>on and off (red button)</strong></div></div>`,
+          de: `<img class="foto-in" src="images/IMG_20230113_084239-1.jpg" alt="" loading="lazy"><p>Der Schalter ist <strong>links neben der Wohnzimmertür</strong>.</p><img class="foto-in" src="images/Telecomandi.jpg" alt="" loading="lazy"><div class="tab"><div><span>Fernbedienung 1</span><strong>Navigation auf dem Bildschirm</strong></div><div><span>Fernbedienung 2</span><strong>Ein / Aus (rote Taste)</strong></div></div>`,
+          fr: `<img class="foto-in" src="images/IMG_20230113_084239-1.jpg" alt="" loading="lazy"><p>L'interrupteur est <strong>à gauche de la porte du salon</strong>.</p><img class="foto-in" src="images/Telecomandi.jpg" alt="" loading="lazy"><div class="tab"><div><span>Télécommande 1</span><strong>pour se déplacer sur l'écran</strong></div><div><span>Télécommande 2</span><strong>marche / arrêt (bouton rouge)</strong></div></div>`,
+          es: `<img class="foto-in" src="images/IMG_20230113_084239-1.jpg" alt="" loading="lazy"><p>El interruptor está <strong>a la izquierda de la puerta del salón</strong>.</p><img class="foto-in" src="images/Telecomandi.jpg" alt="" loading="lazy"><div class="tab"><div><span>Mando 1</span><strong>para moverse por la pantalla</strong></div><div><span>Mando 2</span><strong>encendido y apagado (botón rojo)</strong></div></div>`
         } }
     ]
   },
