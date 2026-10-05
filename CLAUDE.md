@@ -1,3 +1,9 @@
+# ⚠️ CARTELLA SUPERATA dal 2026-10-06
+
+La nuova app è stata spostata in `CLAUDE\ATTICO PER INTERNO` (indirizzo dei QR code: https://pxh2407.github.io/panoramicpenthouse_info/). **Lavorare SOLO lì.** Questa cartella resta come storia dello sviluppo; il suo indirizzo di anteprima rimanda a quello dei QR code.
+
+---
+
 # Attico Panoramico — Guida ospiti (NUOVA versione, 2026-10-05)
 
 Rifacimento professionale dell'app `CLAUDE\ATTICO PER INTERNO` (che resta intatta e online: il QR nella casa punta ancora a quella).
